@@ -49,7 +49,7 @@ Removing and re-adding works.
 end
 
 @noinline function activate_project(project_dir::AbstractString, typython_dir::AbstractString)
-    Base.ACTIVE_PRIJECT[] = project_dir
+    Base.ACTIVE_PROJECT[] = project_dir
     force_resolve(typython_dir)
     nothing
 end
