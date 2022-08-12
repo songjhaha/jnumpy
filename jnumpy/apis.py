@@ -28,14 +28,14 @@ def include_src(src_file: str, current_file_path: str = "./__init__.py"):
 @contextlib.contextmanager
 def activate_project_nocheck(project_dir: str):
     exec_julia(
-        f"Pkg.activate({escape_to_julia_rawstr(project_dir)}, io=devnull)",
+        f"Base.ACTIVE_PROJECT[]={escape_to_julia_rawstr(project_dir)}",
         use_gil=False,
     )
     try:
         yield
     finally:
         exec_julia(
-            f"Pkg.activate({escape_to_julia_rawstr(project_dir)}, io=devnull)",
+            f"Base.ACTIVE_PROJECT[]={escape_to_julia_rawstr(SessionCtx.DEFAULT_PROJECT_DIR)}",
             use_gil=False,
         )
 
