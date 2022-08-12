@@ -1,8 +1,10 @@
 from jnumpy import init_jl, init_project
 import jnumpy as np
-
+import time
 init_jl()
+start = time.time()
 init_project(__file__)
+print(time.time()-start)
 
 from _fast_kmeans import _fast_kmeans
 
