@@ -1,10 +1,12 @@
 from jnumpy import init_jl, init_project
 import jnumpy as np
 import time
+start = time.time()
 init_jl()
+print("init_jl(): ", time.time()-start)
 start = time.time()
 init_project(__file__)
-print(time.time()-start)
+print("kmeans init_project(): ", time.time()-start, "\n")
 
 from _fast_kmeans import _fast_kmeans
 

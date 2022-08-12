@@ -17,7 +17,7 @@ from .envars import (
     InitTools_path,
     SessionCtx,
 )
-
+import time
 # XXX: adding an environment variable for fast debugging:
 # os.environ[CF_TYPY_JL_OPTS] = "--compile=min -O0"
 
@@ -94,6 +94,9 @@ class JuliaError(Exception):
 
 
 def init_jl():
+    #################
+    print("calling init_jl()")
+    start = time.time()
     global _eval_jl
     if os.getenv(CF_TYPY_MODE) == CF_TYPY_MODE_JULIA:
         return
@@ -124,7 +127,9 @@ def init_jl():
     ).stdout.splitlines()
     SessionCtx.JULIA_START_OPTIONS = [jl_opts_proj, *jl_opts]
     SessionCtx.DEFAULT_PROJECT_DIR = default_project_dir
-
+    print("step1: ", time.time()-start)
+    #################
+    start = time.time()
     old_cwd = os.getcwd()
     try:
         os.chdir(os.path.dirname(os.path.abspath(libpath)))
@@ -157,7 +162,9 @@ def init_jl():
                     lib.jl_exception_clear()
                     raise JuliaError(ef.getvalue())
                 return None
-
+        print("step2: ", time.time()-start)
+        ##########################
+        start = time.time()
         exec_julia(
             f"""
             import Pkg
@@ -193,6 +200,7 @@ def init_jl():
             )
         except JuliaError:
             raise RuntimeError("invalid julia initialization")
-
+        print("step3: ", time.time()-start, "\n")
+        ########################
     finally:
         os.chdir(old_cwd)
