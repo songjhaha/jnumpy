@@ -161,7 +161,7 @@ def init_jl():
         exec_julia(
             f"""
             import Pkg
-            Pkg.activate({escape_to_julia_rawstr(default_project_dir)}, io=devnull)
+            Base.ACTIVE_PROJECT[]={escape_to_julia_rawstr(default_project_dir)}
             include({escape_to_julia_rawstr(InitTools_path)})
         """,
             use_gil=False,
